@@ -1,0 +1,38 @@
+select storenumber, itemnumber, datestamp, qty, sales, trxtype, orderitemid, orderid, orderdate, financeoption, osluser, storeusername, register, "operator", linestatus, warporderid, activationtype, returndate, equipmentname, equipmenttype, carrier, rateplan, activateddate, datecancelled, linetype, tmo_orderid, employeeid, visitnumber, uploadeddate
+FROM wus.wm_actual_hourly
+where datestamp = '2023-03-31'
+and orderdate  between '2023-03-31 15:00:00.000' and '2023-03-31 15:30:00.000';
+
+SELECT "File Number", "First Name", "Last Name", "Job Function Code", "Home Cost Center", "Home Cost Center Description", "Timecard Work Cost Center", "Worked CC", "Timecard Worked Department Description", "Worked Code", "Timecard Pay Date", "TimeIn", "TimeOut", "Timecard Hours", "Zero Hours", "Approve", "WorkedCC", "Report Run Date -30", "Associate ID", "Job Title Description"
+FROM adp.us_time_data;
+
+SELECT filenumber, firstname, lastname, jobfunction, homecostnbr, homecostnbrdesc, timecardworkcc, workedcc, tcworkeddeptdesc, workedcode, timecarddate, tctimein, tctimeout, workedhours, zerohours, approve, storenumber, jobtitle, associateid, updateddate
+FROM adp.wm_adpshift
+where timecarddate = '2023-03-31'
+and tctimein = '03:00 PM'
+and tctimeout <> '03:30 PM';
+
+SELECT distinct (employeeid),b.tctimein,b.tctimeout
+FROM wus.wm_actual_hourly a
+join adp.wm_adpshift b
+ON a.EmployeeID = RIGHT(b.FileNumber,5)
+where a.datestamp = '2023-03-31'
+and b.tctimein = '03:00 PM'
+and b.tctimeout <> '03:30 PM';
+
+SELECT filenumber, firstname, lastname, jobfunction, homecostnbr, homecostnbrdesc, timecardworkcc, workedcc, tcworkeddeptdesc, workedcode, timecarddate, tctimein, tctimeout, workedhours, zerohours, approve, storenumber, jobtitle, associateid, updateddate
+FROM adp.wm_adpshift_test_table;
+
+SELECT sum(qty)         --storenumber, itemnumber, datestamp, qty, sales, trxtype, orderitemid, orderid, orderdate, financeoption, osluser, storeusername, register, "operator", linestatus, warporderid, activationtype, returndate, equipmentname, equipmenttype, carrier, rateplan, activateddate, datecancelled, linetype, tmo_orderid, employeeid, visitnumber, uploadeddate
+FROM wus.wm_actual_hourly
+where datestamp = '2023-03-31'
+and orderdate  between '2023-03-31 15:00:00.000' and '2023-03-31 15:30:00.000';
+
+
+SELECT distinct (employeeid), a.datestamp, b.tctimein,b.tctimeout
+FROM wus.wm_actual_hourly a
+join adp.wm_adpshift b
+ON a.EmployeeID = RIGHT(b.FileNumber,5)
+where a.datestamp = '2023-03-31'
+and b.tctimein = '03:00 PM'
+and b.tctimeout >= '03:30 PM';
